@@ -1,89 +1,76 @@
 #include <iostream>
 #include <vector>
+#include <list>
+#include <string>
+
+class employee
+{
+
+private:
+
+	string name;
+	string adress;
+
+public:
+
+	employee() {};
+	string & name() { return name; };
+
+
+
+};
+
+
+string find_addr(const list<employee> & emps, const string & name);
 
 using namespace std;
 
 int main()
 {
-	int x = 0;
-
-
-	//JG Question #1
-	widget a;
-	cout << a << endl;
 	
-	//widget b();			//the compiler treats this as a function call.
-	//cout << b << endl;
-	
-	widget c{ 1 };
-	cout << c << endl;
-	
-	widget d(x);			//if I had replaced "x" with "int" the compiler will think this is a function call
-	cout << d << endl;
-	
-	widget e{ x };
-	cout << e << endl;
-	
-	widget f = x;			//always INITIALIZATION, never assignment		
-	cout << f << endl;
-	
-	widget g = { x };		//always INITIALIZATION, never assignment
-	cout << g << endl;
-	
-	auto h = x;             //this should have called the copy constructor, but didn't    
-	cout << h << endl;
-	
-	auto i = widget{ x };       
-	cout << i << endl;
+	//JG Question
 
-	//Guru Questions 2
-	vector<int> v1(10, 20);   // (a) - This initializes a vector, and assigns the value 20 to the first 10 entries.
-	for (auto x : v1)
-	{
-		cout << x << ", ";
-	}
-
-	cout << endl << endl;
-
-	vector<int> v2{ 10, 20 };   // (b) - This initializes a vector, and assigns the values 10 and 20 to the first 2 elements.
-	for (auto x : v2)
-	{
-		cout << x << ", ";
-	}
-
-	//Guru Questions 4
-	// Uniform Initialization
-	// Works well for generic programming (unambiguous)
-	// Can be used as function arguments when you don't want to name a variable
-
-	//Guru Quesiton #4
-	// When the class itself has a constructor that uses ().  
+		/*
 	
-	/* 
-		Here’s the simple guideline:
+		A temporary object is an unnamed object that we cannot know the address of.  Often called an rvalue.
 
-			Guideline: Prefer to use initialization with { }, such as vector<int> v = { 1, 2, 3, 4 }; 
-			or auto v = vector<int>{ 1, 2, 3, 4 };, because it’s more consistent, more correct, 
-			and avoids having to know about old-style pitfalls at all. In single-argument cases where 
-			you prefer to see only the = sign, such as int i = 42; and auto x = anything; omitting the braces is fine. …
+		...and just think about “rvalues” for temporary objects without names and whose addresses can’t be taken, 
+		and “lvalues” for non-temporary objects that have names and whose addresses can be taken.
 	
-		That covers the vast majority of cases. There is only one main exception:
+		*/
 
-			… In rare cases, such as vector<int> v(10,20); or auto v = vector<int>(10,20);, 
-			use initialization with ( ) to explicitly call a constructor that is otherwise hidden 
-			by an initializer_list constructor.
-
-		However, the reason this should be generally “rare” is because default and copy construction are already special and work fine with { }, 
-		and good class design now mostly avoids the resort-to-( ) case for user-defined constructors because of this final design guideline:
-
-			Guideline: When you design a class, avoid providing a constructor that ambiguously 
-			overloads with an initializer_list constructor, so that users won’t need to use ( ) 
-			to reach such a hidden constructor.
+	//Guru Questions
+	
+	/*
+	
+		1. Function args passed by value.  They should be passed by const reference (const &)
+		2. The end of the range is recalculated on each loop iteration. (potential, but not really due to auto)
+			a.  The  postincrement operator (i++) has to increment and return the original value, which is extra work
+				when compared to the preincrement operator.
+		3. The comparison might use an implicit conversion.
+			a.  The (*i == name) conditional statement forces the compiler to choose a member function to implicitly convert i to string.  This is either done 
+				using the string class constructor, or the employee class constructor.  Either way, the implicit conversion creates a temporary object.
+		4.	
+	
+	
 	*/
+	
 
 	cout << endl << endl;
 	system("PAUSE");
 
 	return 0;
 
+}
+
+string find_addr(const list<employee> & emps, const string & name)
+{
+	for (auto i = begin(emps); i != end(emps); i++)
+	{
+		if (i->name() == name) 
+		{
+			return i->addr;
+		}
+	}
+	return "";
 }
